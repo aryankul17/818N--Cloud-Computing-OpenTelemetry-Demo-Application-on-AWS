@@ -22,25 +22,6 @@ The project is divided into four distinct phases:
 
 ---
 
-## Repository Structure
-├── Document/
-│ ├── Group 18 Final Project Report.pdf
-│ ├── Group18_Final_Project_Presentation.pptx
-│ └── video walkthrough.mp4
-│
-├── manifests workflows/
-│ ├── cicd-pipeline.yml
-│ ├── eksctl-accessentry.yaml
-│ └── pod-restart-alert.yaml
-│
-├── Phase1/ phase1_readme.md
-├── Phase2/phase2_readme.md
-├── Phase3/phase3_readme.md
-├── Phase4/phase4_readme.md
-└── main_readme.md
-
----
-
 ## Technologies & Tools
 
 - **Cloud Platform**: AWS (EKS, EC2, IAM, VPC, S3, Route 53)
@@ -69,6 +50,18 @@ A full walkthrough of the deployment and observability setup is available in the
 ## Credits
 
 This was developed as a group project for a University of Maryland, graduate studies masters course Cloud Computing. While it involved collaborative contributions, the repository is maintained by me for personal portfolio and learning demonstration purposes.
+
+---
+
+## References
+1. OpenTelemetry Demo Repository
+https://github.com/open-telemetry/opentelemetry-demo
+
+2. OpenTelemetry Documentation
+https://opentelemetry.io/docs/demo
+
+3. OpenTelemetry Helm Charts
+https://github.com/open-telemetry/opentelemetry-helm-charts
 
 ---
 
