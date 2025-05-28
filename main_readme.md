@@ -22,25 +22,6 @@ The project is divided into four distinct phases:
 
 ---
 
-## Repository Structure
-├── Document/
-│ ├── Group 18 Final Project Report.pdf
-│ ├── Group18_Final_Project_Presentation.pptx
-│ └── video walkthrough.mp4
-│
-├── manifests workflows/
-│ ├── cicd-pipeline.yml
-│ ├── eksctl-accessentry.yaml
-│ └── pod-restart-alert.yaml
-│
-├── Phase1/ phase1_readme.md
-├── Phase2/phase2_readme.md
-├── Phase3/phase3_readme.md
-├── Phase4/phase4_readme.md
-└── main_readme.md
-<pre> ```plaintext Cloud-Computing-OpenTelemetry-Demo-Application-on-AWS/ ├── Document/ │ ├── Group 18 Final Project Report.pdf │ ├── Group18_Final_Project_Presentation.pptx │ └── video walkthrough.mp4 │ ├── manifests workflows/ │ ├── cicd-pipeline.yml │ ├── eksctl-accessentry.yaml │ └── pod-restart-alert.yaml │ ├── Phase1/ │ └── phase1_readme.md │ ├── Phase2/ │ └── phase2_readme.md │ ├── Phase3/ │ └── phase3_readme.md │ ├── Phase4/ │ └── phase4_readme.md │ └── main_readme.md ``` </pre>
----
-
 ## Technologies & Tools
 
 - **Cloud Platform**: AWS (EKS, EC2, IAM, VPC, S3, Route 53)
