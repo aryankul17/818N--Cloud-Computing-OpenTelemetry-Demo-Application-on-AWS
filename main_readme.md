@@ -53,5 +53,17 @@ This was developed as a group project for a University of Maryland, graduate stu
 
 ---
 
+## References
+1. OpenTelemetry Demo Repository
+https://github.com/open-telemetry/opentelemetry-demo
+
+2. OpenTelemetry Documentation
+https://opentelemetry.io/docs/demo
+
+3. OpenTelemetry Helm Charts
+https://github.com/open-telemetry/opentelemetry-helm-charts
+
+---
+
 
 
