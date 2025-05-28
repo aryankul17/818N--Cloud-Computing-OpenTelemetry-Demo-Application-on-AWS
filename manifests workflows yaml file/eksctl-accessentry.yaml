@@ -1,0 +1,17 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: otel-demo
+  region: us-east-1
+  version: '1.32'
+
+accessConfig:
+  authenticationMode: API
+  accessEntries:
+    - principalARN: arn:aws:iam::306011031134:user/Aashay_Mehta
+      type: STANDARD
+      accessPolicies:
+        - policyARN: arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy
+          accessScope:
+            type: cluster

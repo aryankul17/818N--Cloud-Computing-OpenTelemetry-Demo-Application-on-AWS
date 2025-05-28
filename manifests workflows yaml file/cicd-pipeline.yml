@@ -1,0 +1,84 @@
+name: OpenTelemetry Demo CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGION: us-east-1
+  CLUSTER_NAME: otel-demo
+  NAMESPACE: otel-namespace
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.REGION }}
+
+    - name: Log in to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker images using Docker Compose
+      run: |
+        docker compose -f ./docker-compose.yml build
+
+    - name: Install Trivy
+      run: |
+        sudo apt-get update
+        sudo apt-get install wget apt-transport-https gnupg lsb-release -y
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update
+        sudo apt-get install trivy -y
+
+    - name: Scan all Docker Compose images using Trivy
+      continue-on-error: true
+      run: |
+        echo "Extracting image names"
+        images=$(docker compose -f ./docker-compose.yml config | grep 'image:' | awk '{print $2}')
+ 
+        for image in $images; do
+          echo "Scanning image"
+          trivy image --exit-code 1 --severity HIGH,CRITICAL "$image"
+        done
+
+    - name: Authenticate to ECR
+      run: |
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 306011031134.dkr.ecr.us-east-1.amazonaws.com
+
+    - name: Push all images to ECR
+      run: |
+        docker compose push
+
+    - name: Set up kubeconfig
+      run: |
+        aws eks update-kubeconfig --region $REGION --name $CLUSTER_NAME
+        
+    - name: Deploy OpenTelemetry Demo
+      id: apply
+      continue-on-error: true
+      run: |
+        kubectl apply -f kubernetes/opentelemetry-demo.yaml -n $NAMESPACE --validate=false
+
+    - name: Rollback
+      if: steps.apply.outcome == 'failure'
+      run: |
+        if ! kubectl apply -f kubernetes/opentelemetry-demo.yaml -n $NAMESPACE; then
+          echo "Apply failed. Rolling back to previous version 3."
+          kubectl rollout undo deployment/ad -n $NAMESPACE
+        fi
+
